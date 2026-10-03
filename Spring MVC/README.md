@@ -1,32 +1,34 @@
-# Spring MVC
+# spring mvc
 
 ## task-mvc-jsp
-Implements `Task.txt` with Spring MVC and JSP. The task has `id`, `title`, `completed`, and a `priority` because the search and validation parts need one.
 
-| Part | Implementation |
-|---|---|
-| 1 | `GET /tasks` (JSTL list), `GET /tasks/{id}` with `@PathVariable`, `GET /tasks/search?priority=HIGH` with an optional `@RequestParam` that defaults to `HIGH` |
-| 2 | `GET /tasks/new` shows a `form:form`, `POST /tasks` saves and redirects |
-| 3 | `@NotBlank` on `title`, `@NotNull` on `priority`, shown with `form:errors` |
-| 4 | `TaskNotFoundException` with `@ResponseStatus(NOT_FOUND)`, handled in a `@ControllerAdvice` that renders `error.jsp` |
+Task.txt, with jsp. Task has id, title, completed and a priority (added the priority myself because the search + validation parts need it).
 
-Run with `mvn spring-boot:run` and open `http://localhost:8080/tasks`.
+1. GET /tasks lists with jstl, /tasks/{id} uses @PathVariable, /tasks/search?priority=HIGH uses an optional @RequestParam that defaults to HIGH
+2. /tasks/new shows the form (spring form tags), POST /tasks saves it and redirects back to the list
+3. @NotBlank on title and @NotNull on priority, errors show up next to the fields with form:errors
+4. TaskNotFoundException has @ResponseStatus(NOT_FOUND) and a @ControllerAdvice renders error.jsp for it
+
+run with `mvn spring-boot:run` then open localhost:8080/tasks. (it uses boot 3.3 just to host the jsp's, the mvc stuff is all normal spring mvc)
 
 ## product-rest-api
-Lab 3 from Session 3.
 
-1. `ProductRestController` at `/api/products` with list, get, create (201 and `Location`), update and delete (204).
-2. `ResponseEntity` everywhere, 404 through `ProductNotFoundException`.
-3. `@Valid @RequestBody`; `MethodArgumentNotValidException` returns a field to message map.
-4. `ApiExceptionHandler` returns an `ErrorResponse` for not found and for any other exception.
-5. `POST /api/products/quick` has one method per `consumes` type, JSON and form-urlencoded.
-6. `ApiKeyInterceptor` on `/api/**` returns a JSON 401 without `X-Api-Key`.
-7. Bonus: `ResponseWrapperAdvice` wraps successful controller responses in `{"data": ..., "timestamp": ...}`. It is scoped with `assignableTypes = ProductRestController.class`, so responses coming from `ApiExceptionHandler` and from the interceptor are not wrapped.
+lab 3 from session 3.
+
+- ProductRestController, full crud, 201 + Location on create, 204 on delete, ResponseEntity everywhere
+- 404 goes through ProductNotFoundException
+- @Valid on the body, validation errors come back as a field -> message map
+- ApiExceptionHandler is the @RestControllerAdvice, ErrorResponse for not found and a generic fallback
+- /api/products/quick has two methods with different consumes, json and form urlencoded
+- ApiKeyInterceptor on /api/** gives a json 401 if X-Api-Key is missing
+- bonus: ResponseWrapperAdvice wraps good responses as {"data":..., "timestamp":...}. its limited to ProductRestController (assignableTypes) so errors and the 401 dont get wrapped
+
+try it:
 
 ```bash
-curl -H "X-Api-Key: k" http://localhost:8080/api/products
-curl -H "X-Api-Key: k" -H "Content-Type: application/json" -d '{"name":"Pen","price":2}' http://localhost:8080/api/products/quick
-curl -H "X-Api-Key: k" -d "name=Pen&price=2" http://localhost:8080/api/products/quick
+curl -H "X-Api-Key: k" localhost:8080/api/products
+curl -H "X-Api-Key: k" -H "Content-Type: application/json" -d '{"name":"Pen","price":2}' localhost:8080/api/products/quick
+curl -H "X-Api-Key: k" -d "name=Pen&price=2" localhost:8080/api/products/quick
 ```
 
-`mvn test` covers all of it.
+mvn test covers everything above

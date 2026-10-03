@@ -1,34 +1,33 @@
-# JPA Library Management System
+# jpa library management
 
-Run `com.library.Main` (H2 in memory, `persistence.xml` unit `libraryPU`). It prints the sample data, the cascade and orphan removal results, the `LazyInitializationException`, and every query result.
+run com.library.Main. h2 in memory, unit name libraryPU. it prints the sample data, cascade + orphan removal, the LazyInitializationException and all the query results.
 
-## Relationships
+## relationships
 
-| Relationship | Owning side | Foreign key | Fetch |
-|---|---|---|---|
-| `Author` 1 to N `Book` | `Book.author` | `book.author_id` | `Author.books` LAZY, `Book.author` LAZY |
-| `Publisher` 1 to N `Book` | `Book.publisher` | `book.publisher_id` | `Book.publisher` LAZY, `Publisher.books` LAZY |
-| `Book` N to N `Category` | `Book.categories` | join table `book_category(book_id, category_id)` | LAZY both ways |
+- Author 1-N Book: Book owns it (book.author_id). Author.books is mappedBy so it has no column
+- Publisher 1-N Book: Book owns it (book.publisher_id), same idea
+- Book N-N Category: Book owns it, join table book_category(book_id, category_id). join table is only needed for many to many because neither side can hold a single fk
 
-- `Author.books` and `Publisher.books` use `mappedBy`, so they are the inverse sides and have no column.
-- A join table is needed only for many to many, because neither table can hold a single foreign key.
-- `@ManyToOne` defaults to EAGER, so it is set to LAZY explicitly.
-- `Author.books` has `cascade = ALL` and `orphanRemoval = true`. Persisting an author persists new books, and removing a book from the list deletes its row. `addBook` and `removeBook` keep both sides in sync.
-- `Publisher.books` has no cascade because deleting a publisher should not delete books.
+everything is LAZY. @ManyToOne is eager by default so i set it to LAZY myself.
+Author.books has cascade ALL + orphanRemoval, so saving an author saves its new books and removing a book from the list deletes the row. addBook/removeBook keep both sides in sync. no cascade on Publisher.books because deleting a publisher shouldnt delete the books.
 
-## Inheritance
-`Person` is an abstract base for `Employee` and `Customer`, mapped with `SINGLE_TABLE` and a `person_type` discriminator. The two subclasses add only one or two fields, so one table avoids joins and is the fastest to query. The cost is that subclass columns are nullable, which is acceptable at this size.
+## inheritance
 
-## Queries
-- JPQL: books by author name, books by publisher, a book by id with the positional parameter `?1`.
-- `JOIN FETCH` loads the author and the books in one `SELECT`.
-- `COUNT` with `GROUP BY` returns each author and the number of books. It uses `LEFT JOIN`, so an author with no books shows 0.
-- Criteria API: by title, then a dynamic version where the title and author filters are optional and predicates are added only when a value is given.
+Person (abstract) -> Employee and Customer, SINGLE_TABLE with a person_type column. went with it because the subclasses only add a field or two, one table means no joins and its the fastest. downside is the subclass columns can be null, fine for something this small.
 
-## LAZY versus JOIN FETCH
-The plain query loads only the author. After the `EntityManager` is closed, `getBooks()` throws `LazyInitializationException` because the collection is an uninitialised proxy with no session. The `JOIN FETCH` query fills the collection while the session is open, so it is safe to read afterwards.
+## queries
 
-## JPQL versus HQL
-`jpqlFirstTwoByTitle` is standard JPQL and needs `SELECT b FROM Book b` and `setMaxResults`. `hqlFirstTwoByTitle` is HQL: `from Book order by title limit 2` has no `SELECT` clause and has a `LIMIT` clause, both of which JPQL does not allow. It works only on Hibernate.
+jpql: books by author name, books by publisher, book by id with ?1.
+join fetch gets an author with all books in one select.
+count + group by for books per author (left join so an author with 0 books still shows 0).
+criteria: by title, then a dynamic version where title and author name are optional and predicates only get added if there is a value.
 
-The optional `orm.xml` extension was not done.
+## lazy vs join fetch
+
+the normal query only loads the author. after the EntityManager is closed, author.getBooks() throws LazyInitializationException because the collection is just an uninitialized proxy with no session behind it. with join fetch the books are loaded in the same query so you can read them after closing.
+
+## jpql vs hql
+
+jpqlFirstTwoByTitle is standard jpql (needs select b from Book b and setMaxResults). hqlFirstTwoByTitle is `from Book order by title limit 2`, no select and a limit clause, jpql doesnt allow either. only works on hibernate.
+
+didnt do the optional orm.xml part.

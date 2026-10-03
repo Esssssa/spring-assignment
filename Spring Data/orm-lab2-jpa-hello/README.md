@@ -1,16 +1,18 @@
-# ORM Day 1, Lab 2: JPA
+# orm day 1 - lab 2 (jpa)
 
-Same `Employee` class as Lab 1, configured through `META-INF/persistence.xml`. Run `com.training.Main`.
+same Employee class as lab 1 but configured with META-INF/persistence.xml. run com.training.Main.
 
-| Operation | Hibernate Native (Lab 1) | JPA (Lab 2) |
+| | hibernate native | jpa |
 |---|---|---|
-| Bootstrap class | `SessionFactory` | `EntityManagerFactory` |
-| Unit-of-work class | `Session` | `EntityManager` |
-| Config file | `hibernate.cfg.xml` | `persistence.xml` |
-| Create | `session.persist(e)` | `em.persist(e)` |
-| Read by id | `session.get(...)` | `em.find(...)` |
-| Query language | HQL | JPQL |
-| Delete | `session.remove(...)` | `em.remove(...)` |
+| bootstrap | SessionFactory | EntityManagerFactory |
+| unit of work | Session | EntityManager |
+| config | hibernate.cfg.xml | persistence.xml |
+| create | session.persist | em.persist |
+| read by id | session.get | em.find |
+| query language | HQL | JPQL |
+| delete | session.remove | em.remove |
 
-## Switching to EclipseLink
-Would change: the dependency in `pom.xml`, the `hibernate.*` properties in `persistence.xml` (replaced by EclipseLink ones), and the provider if it is declared explicitly. Would not change: the `Employee` entity annotations, `EmployeeJpaDao`, `Main`, and the JPQL, because they only use `jakarta.persistence`.
+**what if we switch to eclipselink?**
+
+what changes: the dependency in the pom, and the hibernate.* properties in persistence.xml (eclipselink has its own ones).
+what doesnt: Employee, EmployeeJpaDao, Main and the jpql, since they only use jakarta.persistence.

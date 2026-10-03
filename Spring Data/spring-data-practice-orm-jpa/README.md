@@ -1,11 +1,11 @@
-# Day 3, Practice Exercises
+# day 3 practice exercises
 
-One project covering the exercises, using `LocalContainerEntityManagerFactoryBean` and `JpaTransactionManager`.
+all in one project, spring + LocalContainerEntityManagerFactoryBean + JpaTransactionManager.
 
-- Department 1 to N Employee mapped with Hibernate through JPA.
-- N+1: `countEmployeesWithNPlusOne` runs 5 statements for 4 departments, and `countEmployeesWithJoinFetch` runs 1.
-- `EmployeeDao` uses `@PersistenceContext`.
-- `PayrollService` throws midway and `Main` shows that the first update is rolled back.
-- Bonus: `EmployeeRepository` is a Spring Data JPA interface with derived queries and one `@Query`, replacing the DAO code with a few lines.
+- Department 1-N Employee
+- n+1: countEmployeesWithNPlusOne runs 5 statements for 4 departments, the join fetch version runs 1
+- EmployeeDao uses @PersistenceContext
+- PayrollService throws in the middle and Main shows the first update got rolled back
+- bonus: EmployeeRepository is spring data jpa (derived queries + one @Query), way less code than the dao
 
-The JdbcTemplate version of the Employee DAO with batch insert is in `spring-jdbc-lab2-jdbctemplate`.
+the jdbctemplate version with the batch insert is in spring-jdbc-lab2-jdbctemplate.

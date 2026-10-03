@@ -1,47 +1,41 @@
-# Spring Assignment
+# spring assignment
 
-One directory per task found in the course PDFs. Every project is a standalone Maven project.
+all the tasks from the pdfs, one folder per task. every one is its own maven project so you can open them separately in intellij.
 
-| Topic | Directory | Source | What it covers |
-|---|---|---|---|
-| Spring AOP | `Spring AOP/lab1-jdk-dynamic-proxy` | Session 1, Lab 1 | `InvocationHandler`, `Proxy.newProxyInstance`, logging and timing |
-| Spring AOP | `Spring AOP/lab2-advice-interfaces` | Session 1, Lab 2 | Before, AfterReturning, Throws, Around advice, `ProxyFactory`, `ProxyFactoryBean`, `NameMatchMethodPointcut` |
-| Spring AOP | `Spring AOP/lab2-aspectj-annotations` | Session 2, Lab 2 | The five advice annotations, single `@Around`, custom `@Cacheable` and `@Timed` |
-| Spring Boot | `Spring Boot/session1-task-tracker-api` | Session 1, Lab | In-memory REST API, `@Value`, 409 limit, `?limit=` |
-| Spring Boot | `Spring Boot/session2-config-logging-actuator` | Session 2 | Profiles, `@ConfigurationProperties`, logging levels, DevTools, Actuator |
-| Spring MVC | `Spring MVC/task-mvc-jsp` | `Task.txt` | JSP list, details, search, create form, validation, exception handling |
-| Spring MVC | `Spring MVC/product-rest-api` | Session 3, Lab 3 | REST CRUD, validation errors, `@RestControllerAdvice`, `consumes`, API key interceptor, response wrapper |
-| Spring Data | `Spring Data/orm-lab1-hibernate-native` | ORM Day 1, Lab 1 | Hibernate native CRUD, lifecycle, first level cache |
-| Spring Data | `Spring Data/orm-lab2-jpa-hello` | ORM Day 1, Lab 2 | JPA `persistence.xml` and `EntityManager` CRUD |
-| Spring Data | `Spring Data/jpa-library-management` | JPA Day 2, Tasks 1 and 2 (and Hands-On Lab 2) | Relationships, cascade, orphan removal, inheritance, JPQL, Criteria |
-| Spring Data | `Spring Data/spring-jdbc-lab1-datasource` | Day 3, Lab 1 | `DataSource` beans, Hikari versus embedded, plain JDBC DAO |
-| Spring Data | `Spring Data/spring-jdbc-lab2-jdbctemplate` | Day 3, Lab 2 | `JdbcTemplate`, named parameters, batch, `@Transactional`, `DuplicateKeyException` |
-| Spring Data | `Spring Data/spring-data-practice-orm-jpa` | Day 3, Practice Exercises | JPA with `@PersistenceContext`, N+1 fix, rollback, Spring Data JPA |
+spring aop
+- lab1-jdk-dynamic-proxy -> session 1 lab 1, proxy by hand with InvocationHandler
+- lab2-advice-interfaces -> session 1 lab 2, before / after returning / throws / around advice with ProxyFactory and ProxyFactoryBean
+- lab2-aspectj-annotations -> session 2 lab 2, the 5 advice annotations + my own @Cacheable and @Timed
 
-The Spring MVC Session 1 and Four Components PDFs only contain a demo project and recaps, and the Spring MVC Session 2 PDF is covered by `Task.txt`, so they have no separate task directories.
+spring boot
+- session1-task-tracker-api -> the task tracker lab (in memory, @Value limits)
+- session2-config-logging-actuator -> profiles, @ConfigurationProperties, logging, actuator
 
-## Running
+spring mvc
+- task-mvc-jsp -> Task.txt (jsp pages, form, validation, exception handling)
+- product-rest-api -> session 3 lab 3, rest api for products
 
-Plain Java projects:
+spring data
+- orm-lab1-hibernate-native -> day 1 lab 1
+- orm-lab2-jpa-hello -> day 1 lab 2
+- jpa-library-management -> day 2 tasks 1 and 2 (library system)
+- spring-jdbc-lab1-datasource -> day 3 lab 1
+- spring-jdbc-lab2-jdbctemplate -> day 3 lab 2
+- spring-data-practice-orm-jpa -> day 3 practice exercises
+- store -> Task.pdf, the final project (online store order management)
+
+the mvc session 1 and "four components" pdfs are just demo projects and recaps, no student task in them, so no folder for those. mvc session 2 is the Task.txt one.
+
+## running
+
+plain java ones:
 
 ```bash
 mvn compile exec:java -Dexec.mainClass=<main class>
 ```
 
-Spring Boot projects:
+boot ones: `mvn spring-boot:run`
 
-```bash
-mvn spring-boot:run
-```
+ones with tests: `mvn test`
 
-Projects with tests:
-
-```bash
-mvn test
-```
-
-Main classes: `com.nti.aop.Main`, `com.training.Main`, `com.library.Main`, `com.nti.jdbc.Main`, `com.nti.practice.Main`.
-
-`spring-jdbc-lab1-datasource` takes the profile as an argument: `-Dexec.args=dev` or `-Dexec.args=prod`.
-
-Requirements: JDK 21 and Maven 3.9.
+needs jdk 21 and maven 3.9. spring-jdbc-lab1 takes the profile as an argument, `-Dexec.args=dev` or `prod`.

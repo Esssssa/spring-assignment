@@ -1,9 +1,9 @@
-# Day 3, Lab 1: JDBC in Spring
+# day 3 lab 1 - jdbc in spring
 
-- `schema.sql` and `data.sql` create `department` and `employee` with 3 departments and 6 employees.
-- `DataSourceConfig` has a Hikari pool of 5 under `@Profile("prod")` and an `EmbeddedDatabaseBuilder` under `@Profile("dev")`.
-- `PlainEmployeeDao` uses `DataSourceUtils`, `PreparedStatement` and `ResultSet` for `findById`, `findAll` and `count`.
-- `Main` prints all employees and the `DataSource` class. The `dev` profile prints `EmbeddedDatabaseFactory$EmbeddedDataSourceProxy` and `prod` prints `com.zaxxer.hikari.HikariDataSource`.
+- schema.sql + data.sql: department and employee tables, 3 departments, 6 employees
+- DataSourceConfig: hikari pool (size 5) under @Profile("prod"), EmbeddedDatabaseBuilder under @Profile("dev")
+- PlainEmployeeDao: plain jdbc with DataSourceUtils, PreparedStatement, ResultSet. findById, findAll, count
+- Main prints the employees and the datasource class. dev prints the EmbeddedDataSourceProxy, prod prints com.zaxxer.hikari.HikariDataSource
 
 ```bash
 mvn compile exec:java -Dexec.mainClass=com.nti.jdbc.Main -Dexec.args=prod

@@ -1,23 +1,23 @@
-# Spring Boot
+# spring boot
 
 ## session1-task-tracker-api
-In-memory REST API for tasks.
 
-| Method | Path | Result |
-|---|---|---|
-| POST | `/api/tasks` | 201 with `Location`, 400 for a blank title, 409 when `tasktracker.max-tasks` is reached |
-| GET | `/api/tasks` | 200, optional `?completed=` and `?limit=` (falls back to `tasktracker.default-page-size`) |
-| GET | `/api/tasks/{id}` | 200 or 404 |
-| PUT | `/api/tasks/{id}` | 200 or 404 |
-| PATCH | `/api/tasks/{id}/complete` | 200 or 404 |
-| DELETE | `/api/tasks/{id}` | 204 or 404 |
+in memory task api, no database. endpoints:
 
-`mvn test` runs a MockMvc test that walks through every row, with the limits lowered through `@TestPropertySource`.
+- POST /api/tasks -> 201 + Location. 400 if title is blank, 409 when we already have tasktracker.max-tasks tasks
+- GET /api/tasks -> optional ?completed= and ?limit=, limit falls back to tasktracker.default-page-size
+- GET /api/tasks/{id} -> 200 or 404
+- PUT /api/tasks/{id} -> 200 or 404
+- PATCH /api/tasks/{id}/complete -> 200 or 404
+- DELETE /api/tasks/{id} -> 204 or 404
+
+there is a MockMvc test that goes through all of them (it lowers the limits with @TestPropertySource so the 409 is easy to hit).
 
 ## session2-config-logging-actuator
-- `application.yml` plus `application-dev.yml` and `application-prod.yml`, selected with `--spring.profiles.active`.
-- `DevDataSeeder` is a `@Profile("dev")` configuration that seeds two products.
-- `ShopProperties` is a `@ConfigurationProperties` record served at `/api/info`.
-- `ProductService` logs with SLF4J at `INFO` and `DEBUG`; the package level changes per profile.
-- DevTools is on the classpath as an optional runtime dependency.
-- Actuator exposes `health`, `info` and `metrics`. `/actuator/info` reads `info.*` because `management.info.env.enabled` is true.
+
+- application.yml + application-dev.yml and application-prod.yml, switch with --spring.profiles.active
+- DevDataSeeder only exists in the dev profile, it adds a keyboard and a mouse
+- ShopProperties is a @ConfigurationProperties record, you can see it at /api/info
+- ProductService logs with slf4j (info + debug), log level for the package changes per profile
+- devtools is in the pom as optional
+- actuator exposes health, info and metrics. had to set management.info.env.enabled=true or /actuator/info just returns {} (found that out the hard way)

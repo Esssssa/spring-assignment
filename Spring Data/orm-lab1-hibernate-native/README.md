@@ -1,15 +1,15 @@
-# ORM Day 1, Lab 1: Hibernate native API
+# orm day 1 - lab 1 (hibernate native)
 
-Run `com.training.Main`. The console shows the SQL for each CRUD step, the lifecycle walkthrough and the cache demonstration.
+run com.training.Main, the console shows the sql for every step, the lifecycle part and the cache part.
 
-## Lifecycle states
-- Transient: created with `new`, no id, Hibernate knows nothing about it.
-- Persistent: attached to an open `Session`, tracked, and changes are written at flush or commit.
-- Detached: was persistent but its `Session` closed, so changes are no longer tracked.
-- Removed: scheduled for deletion by `session.remove(...)`, the row is gone after commit.
+**lifecycle, one line each**
+- transient: just created with new, no id, hibernate doesnt know about it
+- persistent: attached to an open session, hibernate tracks it and writes changes on flush/commit
+- detached: was persistent but the session closed, changes arent tracked anymore
+- removed: marked for delete with session.remove, row is gone once you commit
 
-## Cache
-Two `get()` calls for the same id in one `Session` return the same reference and issue one `SELECT`. A new `Session` issues a new `SELECT`, so the first level cache belongs to one `Session`.
+**cache**
+two get() calls for the same id in one session give back the same object and only one select runs. open a new session and it runs the select again, so the first level cache only lives as long as the session.
 
-## Part F
-In raw JDBC the raise needs an `UPDATE` statement written by hand, a `PreparedStatement`, parameters bound in the right order, `executeUpdate`, and manual closing of resources. Here the salary field is changed on a managed object and dirty checking builds and runs the `UPDATE` at commit.
+**part F**
+with plain jdbc the raise would be writing the UPDATE by hand, preparing the statement, binding the params in the right order, executing it and closing everything. here i just change the salary on a managed object and dirty checking creates the update at commit.

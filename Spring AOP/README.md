@@ -1,17 +1,17 @@
-# Spring AOP
+# spring aop
 
-## lab1-jdk-dynamic-proxy
-`LoggingHandler` wraps `NotificationServiceImpl` through `Proxy.newProxyInstance`. Each call logs the method name and arguments, the return value, and the elapsed time.
+**lab1-jdk-dynamic-proxy**
 
-## lab2-advice-interfaces
-Four advices on `InventoryServiceImpl`: `MethodBeforeAdvice`, `AfterReturningAdvice`, `ThrowsAdvice` and a `MethodInterceptor` that times every call with `try/finally`.
+LoggingHandler wraps NotificationServiceImpl using Proxy.newProxyInstance. logs the method name + args before, the return value after, and how long the call took.
 
-- `Main` builds the proxy with `ProxyFactory` and shows each advice firing.
-- `AopConfig` exposes the same proxy as a container bean with `ProxyFactoryBean`.
-- The bonus uses `NameMatchMethodPointcut` so that only `reserveStock` is logged.
+**lab2-advice-interfaces**
 
-The interceptor is listed first so it wraps the other advices, which is why its timing line prints last for each call.
+four advices on InventoryServiceImpl: MethodBeforeAdvice, AfterReturningAdvice, ThrowsAdvice and a MethodInterceptor for timing (try/finally so it always prints).
+Main builds the proxy with ProxyFactory, AopConfig does the same thing as a bean with ProxyFactoryBean. the bonus with NameMatchMethodPointcut is at the bottom of Main, only reserveStock gets logged there.
 
-## lab2-aspectj-annotations
-- Part A: `FourAdviceAspect` uses `@Before`, `@AfterReturning`, `@AfterThrowing` and `@After`. `AroundAspect` replaces all four with one `@Around`.
-- Part B: `@Cacheable` and `@Timed` are custom annotations picked up with `@annotation(...)` pointcuts by `CacheAspect` and `TimingAspect`.
+the timing interceptor is added first so it wraps everything else, thats why its line comes out last for each call.
+
+**lab2-aspectj-annotations**
+
+part A is FourAdviceAspect (@Before, @AfterReturning, @AfterThrowing, @After) and then AroundAspect which does all of it in one @Around.
+part B is the custom annotations, @Cacheable and @Timed, picked up with @annotation() pointcuts.
