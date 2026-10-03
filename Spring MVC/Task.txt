@@ -1,0 +1,18 @@
+Task {id, title, completed}
+Task 1 — Read Endpoints
+GET /tasks → list all (plain JSTL, no forms)
+GET /tasks/{id} → one task, via @PathVariable
+GET /tasks/search?priority=HIGH → filter, via @RequestParam (optional, with a default)
+
+
+Task 2- Create -- part 2 
+GET /tasks/new → create new task using form
+
+
+Task 3 — Validation
+Add @NotBlank on title, @NotNull on priority
+
+
+Task 4 — Exception Handling
+GET /tasks/{id} with a not exist id → throw TaskNotFoundException (@ResponseStatus(NOT_FOUND))
+Handle it in a @ControllerAdvice, returning a small error JSP

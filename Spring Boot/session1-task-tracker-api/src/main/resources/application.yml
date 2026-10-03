@@ -1,0 +1,3 @@
+tasktracker:
+  max-tasks: 50
+  default-page-size: 10

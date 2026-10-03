@@ -1,0 +1,7 @@
+logging:
+  level:
+    com.example.shop: WARN
+
+shop:
+  name: Demo Shop (prod)
+  page-size: 50

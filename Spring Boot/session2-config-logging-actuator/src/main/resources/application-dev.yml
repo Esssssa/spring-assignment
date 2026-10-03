@@ -1,0 +1,6 @@
+logging:
+  level:
+    com.example.shop: DEBUG
+
+shop:
+  name: Demo Shop (dev)
